@@ -274,7 +274,7 @@ public class Table {
 	}
 	
 	/**
-	 * Returns value in respect to precise intervals of the table, else an empty optional.
+	 * Returns value in respect to precise intervals of the table.
 	 * @param row to be searched by row interval.
 	 * @param column to be searched by column interval.
 	 * @return corresponding index in the table.
@@ -308,12 +308,12 @@ public class Table {
 	}
 	
 	/**
-	 * Gets optional value that has been interpolated corresponding to row and column inputs.
+	 * Gets value that has been interpolated corresponding to row and column inputs.
 	 * @param row to look up.
 	 * @param column to look up.
 	 * @return interpolated value corresponding to row and column.
 	 */
-	float interpolate(final float row, final float column) {
+	public float interpolate(final float row, final float column) {
 		float rowLowerInterval = rowIntervals.floor(row);
 		float rowHigherInterval = rowIntervals.ceiling(row);
 		
@@ -390,6 +390,20 @@ public class Table {
 			for(float number : floats) {
 				String check = String.valueOf(number);
 				subArrayString.add(check.equals("NaN") ? "Float.NaN" : check + 'f');
+			}
+			arrayString.add(subArrayString.toString());
+		}
+		return arrayString.toString();
+	}
+	public static String toIOSFormat(Table table) {
+		StringJoiner arrayString = new StringJoiner(",\n", "[\n", "\n]\n");
+		
+		for(float[] floats : table.table) {
+			StringJoiner subArrayString = new StringJoiner(", ", "   [", "]");
+			
+			for(float number : floats) {
+				String check = String.valueOf(number);
+				subArrayString.add(check.equals("NaN") ? "nan" : check);
 			}
 			arrayString.add(subArrayString.toString());
 		}
